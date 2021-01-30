@@ -2,7 +2,7 @@
   "version": "1.0.0",
   "rss": "<LINK TO RSS FEED>",
   "discord": {
-    "clientId": "<FILL IN OR REMOVE DISCORD OBJECT>",
+    "clientId": "805119515234795522",
     "smallImageText": "<FILL IN OR REMOVE DISCORD OBJECT>",
     "smallImageKey": "<FILL IN OR REMOVE DISCORD OBJECT>"
   },
@@ -11,7 +11,7 @@
       "id": "Finalium-Network-1.12.2",
       "name": "Finalium-Network (Minecraft 1.12.2)",
       "description": "Finalium-Network Running Minecraft 1.12.2 (Forge v14.23.5.2854)",
-      "icon": null,
+      "icon": "https://finalium.fr/storage/img/favicon.png",
       "version": "1.0.0",
       "address": "play.finalium.fr:25565",
       "minecraftVersion": "1.12.2",
