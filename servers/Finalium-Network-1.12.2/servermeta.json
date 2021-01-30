@@ -1,0 +1,20 @@
+{
+  "$schema": "file:///C:/Users/alexa/Documents/GitHub/FinaLauncher/schemas/ServerMetaSchema.schema.json",
+  "meta": {
+    "version": "1.0.0",
+    "name": "Finalium-Network (Minecraft 1.12.2)",
+    "description": "Finalium-Network Running Minecraft 1.12.2 (Forge v14.23.5.2854)",
+    "address": "localhost:25565",
+    "discord": {
+      "shortId": "<FILL IN OR REMOVE DISCORD OBJECT>",
+      "largeImageText": "<FILL IN OR REMOVE DISCORD OBJECT>",
+      "largeImageKey": "<FILL IN OR REMOVE DISCORD OBJECT>"
+    },
+    "mainServer": false,
+    "autoconnect": false
+  },
+  "forge": {
+    "version": "14.23.5.2854"
+  },
+  "untrackedFiles": []
+}
