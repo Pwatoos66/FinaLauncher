@@ -1,5 +1,5 @@
 {
-  "$schema": "file:///C:/Users/alexa/Documents/GitHub/FinaLauncher/schemas/DistroMetaSchema.schema.json",
+  "$schema": "file:///C:/Users/alexa/Documents/Finalium-Serveur/Launcher%20FINA/web/schemas/DistroMetaSchema.schema.json",
   "meta": {
     "rss": "<LINK TO RSS FEED>",
     "discord": {
