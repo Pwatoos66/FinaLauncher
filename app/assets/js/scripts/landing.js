@@ -11,6 +11,7 @@ const DiscordWrapper          = require('./assets/js/discordwrapper')
 const Mojang                  = require('./assets/js/mojang')
 const ProcessBuilder          = require('./assets/js/processbuilder')
 const ServerStatus            = require('./assets/js/serverstatus')
+const { skinview3d }          = require('./assets/js/skinview3d')
 
 // Launch Elements
 const launch_content          = document.getElementById('launch_content')
@@ -130,7 +131,14 @@ function updateSelectedAccount(authUser){
             username = authUser.displayName
         }
         if(authUser.uuid != null){
-            document.getElementById('avatarContainer').style.backgroundImage = `url('https://minotar.net/armor/body/${authUser.username}/120.png')`
+            var skinViewer = new skinview3d.SkinViewer({
+                canvas: document.getElementById("avatarContainer"),
+                width: 120,
+                height: 240,
+                skin: `https://finalium.fr/api/skins/${authUser.id}`
+            });
+
+            //document.getElementById('avatarContainer').style.backgroundImage = `url('https://minotar.net/armor/body/${authUser.uuid}/120.png')`
         }
     }
     user_text.innerHTML = username
