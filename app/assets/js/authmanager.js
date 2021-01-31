@@ -6,12 +6,13 @@
  * if applicable, in the config using the ConfigManager. All login procedures should
  * be made through this module.
  * 
- * @module authmanager
  */
 // Requirements
+const { Authenticator } = require('azuriom-auth')
 const ConfigManager = require('./configmanager')
 const LoggerUtil    = require('./loggerutil')
 const Mojang        = require('./mojang')
+const Azuriom       = new Authenticator('https://finalium.fr');
 const logger        = LoggerUtil('%c[AuthManager]', 'color: #a02d2a; font-weight: bold')
 const loggerSuccess = LoggerUtil('%c[AuthManager]', 'color: #209b07; font-weight: bold')
 
@@ -28,12 +29,12 @@ const loggerSuccess = LoggerUtil('%c[AuthManager]', 'color: #209b07; font-weight
  */
 exports.addAccount = async function(username, password){
     try {
-        const session = await Mojang.authenticate(username, password, ConfigManager.getClientToken())
-        if(session.selectedProfile != null){
-            const ret = ConfigManager.addAuthAccount(session.selectedProfile.id, session.accessToken, username, session.selectedProfile.name)
-            if(ConfigManager.getClientToken() == null){
+        const session = await Azuriom.auth(username, password)
+        if(session.accessToken != null){
+            const ret = ConfigManager.addAuthAccount(session.uuid, session.accessToken, username, session.username)
+            /*if(ConfigManager.getClientToken() == null){
                 ConfigManager.setClientToken(session.clientToken)
-            }
+            }*/
             ConfigManager.save()
             return ret
         } else {
