@@ -29,7 +29,7 @@ const statuses = [
         essential: true
     },
     {
-        service: 'textures.minecraft.net',
+        service: 'finalium.fr/skin-api',
         status: 'grey',
         name: 'Minecraft Skins',
         essential: false
