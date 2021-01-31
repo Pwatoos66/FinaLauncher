@@ -21,7 +21,7 @@ builder.build({
         appId: 'finalauncher',
         productName: 'Finalium Launcher',
         artifactName: '${productName}-setup-${version}.${ext}',
-        copyright: 'Copyright © 2018-2021 Daniel Scalzi & Finalium Network',
+        copyright: 'Copyright © 2018-2021 Finalium Network',
         directories: {
             buildResources: 'build',
             output: 'dist'
@@ -47,7 +47,7 @@ builder.build({
         linux: {
             target: 'AppImage',
             maintainer: 'Daniel Scalzi',
-            vendor: 'Daniel Scalzi',
+            vendor: 'Finalium Network',
             synopsis: 'Modded Minecraft Launcher',
             description: 'Custom launcher which allows users to join modded servers. All mods, configurations, and updates are handled automatically.',
             category: 'Game'
