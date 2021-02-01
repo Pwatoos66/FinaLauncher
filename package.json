@@ -4,7 +4,7 @@
   "productName": "Finalium Launcher",
   "description": "Finalium Minecraft Launcher",
   "author": "Finalium Network (https://github.com/Pwatoos66/FinaLauncher/)",
-  "license": "UNLICENSED",
+  "license": "GPL-3",
   "homepage": "https://github.com/Pwatoos66/FinaLauncher",
   "bugs": {
     "url": "https://github.com/Pwatoos66/FinaLauncher/issues"
