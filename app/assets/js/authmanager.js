@@ -8,11 +8,11 @@
  * 
  */
 // Requirements
-const { Authenticator } = require('azuriom-auth')
+const Azuriom        = require('./azuriom')
 const ConfigManager = require('./configmanager')
 const LoggerUtil    = require('./loggerutil')
 const Mojang        = require('./mojang')
-const Azuriom       = new Authenticator('https://finalium.fr');
+//const { Authenticator }       = require('azuriom-auth'). new Authenticator('https://finalium.fr');
 const logger        = LoggerUtil('%c[AuthManager]', 'color: #a02d2a; font-weight: bold')
 const loggerSuccess = LoggerUtil('%c[AuthManager]', 'color: #209b07; font-weight: bold')
 
@@ -29,7 +29,7 @@ const loggerSuccess = LoggerUtil('%c[AuthManager]', 'color: #209b07; font-weight
  */
 exports.addAccount = async function(username, password){
     try {
-        const session = await Azuriom.auth(username, password)
+        const session = await Azuriom.authenticate(username, password)
         if(session.accessToken != null){
             const ret = ConfigManager.addAuthAccount(session.uuid, session.accessToken, username, session.username)
             /*if(ConfigManager.getClientToken() == null){
@@ -56,7 +56,7 @@ exports.addAccount = async function(username, password){
 exports.removeAccount = async function(uuid){
     try {
         const authAcc = ConfigManager.getAuthAccount(uuid)
-        await Mojang.invalidate(authAcc.accessToken, ConfigManager.getClientToken())
+        await Azuriom.logout(authAcc.accessToken)
         ConfigManager.removeAuthAccount(uuid)
         ConfigManager.save()
         return Promise.resolve()
@@ -75,6 +75,8 @@ exports.removeAccount = async function(uuid){
  * @returns {Promise.<boolean>} Promise which resolves to true if the access token is valid,
  * otherwise false.
  */
+
+ /*
 exports.validateSelected = async function(){
     const current = ConfigManager.getSelectedAccount()
     const isValid = await Mojang.validate(current.accessToken, ConfigManager.getClientToken())
@@ -98,3 +100,4 @@ exports.validateSelected = async function(){
         return true
     }
 }
+*/
