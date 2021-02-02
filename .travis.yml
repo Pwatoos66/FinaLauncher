@@ -1,12 +1,3 @@
-deploy:
-  provider: releases
-  api_key:
-    secure: 28ff71073cc848ef1fbfea0f9ee38ca3b4443e83 
-  file: "FILE TO UPLOAD"
-  skip_cleanup: true
-  draft: true
-   on:
-    tags: true
 matrix:
   include:
     - os: osx
