@@ -38,7 +38,7 @@ exports.addAccount = async function(username, password){
             ConfigManager.save()
             return ret
         } else {
-            throw new Error('NotPaidAccount')
+            throw new Error('UnknownAccount')
         }
         
     } catch (err){

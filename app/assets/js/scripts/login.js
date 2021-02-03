@@ -206,10 +206,10 @@ function resolveError(err){
         }
     }
     if(err.message != null){
-        if(err.message === 'NotPaidAccount'){
+        if(err.message === 'UnknownAccount'){
             return {
-                title: Lang.queryJS('login.error.notPaid.title'),
-                desc: Lang.queryJS('login.error.notPaid.desc')
+                title: Lang.queryJS('login.error.unknown_account.title'),
+                desc: Lang.queryJS('login.error.unknown_account.desc')
             }
         } else {
             // Unknown error with request.
