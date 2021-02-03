@@ -211,7 +211,17 @@ function resolveError(err){
                 title: Lang.queryJS('login.error.unknown_account.title'),
                 desc: Lang.queryJS('login.error.unknown_account.desc')
             }
-        } else {
+        } else if(err.message === 'BannedAccount'){
+            return {
+                title: Lang.queryJS('login.error.banned_account.title'),
+                desc: Lang.queryJS('login.error.banned_account.desc')
+            }
+        } else if(err.message === 'NotVerifiedAccount'){
+            return {
+                title: Lang.queryJS('login.error.not_verified_account.title'),
+                desc: Lang.queryJS('login.error.not_verified_account.desc')
+            }
+        } else{
             // Unknown error with request.
             return {
                 title: Lang.queryJS('login.error.unknown.title'),

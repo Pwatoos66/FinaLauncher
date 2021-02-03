@@ -31,6 +31,14 @@
                     "title": "Erreur lors de la connexion:<br>Compte introuvable",
                     "desc": "Le compte avec lequel vous essayez de vous connecter n'existe pas.<br>Vous pouvez créer un compte sur <a href=\"https://finalium.fr/user/register\">Finalium</a>."
                 },
+                "banned_account": {
+                    "title": "Erreur lors de la connexion:<br>Compte banni",
+                    "desc": "Le compte avec lequel vous essayez de vous connecter est banni."
+                },
+                "not_verified_account": {
+                    "title": "Erreur lors de la connexion:<br>Compte non verifié",
+                    "desc": "Le compte avec lequel vous essayez de vous connecter n'a pas été verifié."
+                },
                 "unknown": {
                     "title": "Erreur lors de la connexion:<br>Erreur inconnue"
                 }

@@ -30,15 +30,24 @@ const loggerSuccess = LoggerUtil('%c[AuthManager]', 'color: #209b07; font-weight
 exports.addAccount = async function(username, password){
     try {
         const session = await Azuriom.authenticate(username, password)
-        if(session.accessToken != null){
+        if(session.id != null){
             const ret = ConfigManager.addAuthAccount(session.uuid, session.accessToken, username, session.username)
-            /*if(ConfigManager.getClientToken() == null){
+            if(ConfigManager.getClientToken() == null){
                 ConfigManager.setClientToken(session.clientToken)
-            }*/
+            }
+
+            if(!session.email_verified) throw new Error('NotVerifiedAccount')
+
             ConfigManager.save()
             return ret
         } else {
-            throw new Error('UnknownAccount')
+            switch(session.message){
+                case "Invalid credentials":
+                    throw new Error('UnknownAccount')
+                case "User banned":
+                    throw new Error('BannedAccount')
+            }
+            
         }
         
     } catch (err){
