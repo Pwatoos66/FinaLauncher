@@ -29,7 +29,7 @@ const statuses = [
         essential: true
     },
     {
-        service: 'finalium.fr/skin-api',
+        service: 'textures.mojang.com',
         status: 'grey',
         name: 'Minecraft Skins',
         essential: false

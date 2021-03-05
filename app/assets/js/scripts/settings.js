@@ -466,12 +466,7 @@ function populateAuthAccounts(){
             </div>
         </div>`
 
-        /*new skinview3d.SkinViewer({
-            canvas: document.getElementById("settingsAuthAccountImage"),
-            //width: 120,
-            //height: 240,
-            skin: `https://finalium.fr/api/skins/${acc.username}`
-        });*/
+        
     })
 
     settingsCurrentAccounts.innerHTML = authAccountStr
