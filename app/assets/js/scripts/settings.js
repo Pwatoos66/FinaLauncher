@@ -444,7 +444,7 @@ function populateAuthAccounts(){
         const acc = authAccounts[val]
         authAccountStr += `<div class="settingsAuthAccount" uuid="${acc.uuid}">
             <div class="settingsAuthAccountLeft">
-               <img class="settingsAuthAccountImage" alt="${acc.displayName}" src="https://crafatar.com/renders/body/${acc.uuid}?scale=3&default=MHF_Steve&overlay">
+                <img class="settingsAuthAccountImage" alt="${acc.displayName}" src="https://crafatar.com/renders/body/${acc.uuid}?scale=3&default=MHF_Steve&overlay">
             </div>
             <div class="settingsAuthAccountRight">
                 <div class="settingsAuthAccountDetails">
@@ -465,8 +465,6 @@ function populateAuthAccounts(){
                 </div>
             </div>
         </div>`
-
-        
     })
 
     settingsCurrentAccounts.innerHTML = authAccountStr
@@ -1171,10 +1169,10 @@ const settingsAboutChangelogText   = settingsTabAbout.getElementsByClassName('se
 const settingsAboutChangelogButton = settingsTabAbout.getElementsByClassName('settingsChangelogButton')[0]
 
 // Bind the devtools toggle button.
-//document.getElementById('settingsAboutDevToolsButton').onclick = (e) => {
-//    let window = remote.getCurrentWindow()
-//    window.toggleDevTools()
-//}
+document.getElementById('settingsAboutDevToolsButton').onclick = (e) => {
+    let window = remote.getCurrentWindow()
+    window.toggleDevTools()
+}
 
 /**
  * Return whether or not the provided version is a prerelease.

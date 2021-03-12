@@ -8,23 +8,23 @@ The distribution index is written in JSON. The general format of the index is as
 {
     "version": "1.0.0",
     "discord": {
-        "clientId": "805119515234795522",
-        "smallImageText": "FinaliumLauncher",
-        "smallImageKey": "icon"
+        "clientId": "12334567890123456789",
+        "smallImageText": "WesterosCraft",
+        "smallImageKey": "seal-circle"
     },
     "rss": "https://westeroscraft.com/articles/index.rss",
     "servers": [
         {
-            "id": "Finalium Network",
-            "name": "EuropaCraft",
-            "description": "Géopolitique, in real life, Europa",
-            "icon": "https://finalium.fr/storage/img/xfavicon.png.pagespeed.ic.RmoSQXKWoS.webp",
+            "id": "Example_Server",
+            "name": "WesterosCraft Example Client",
+            "description": "Example WesterosCraft server. Connect for fun!",
+            "icon": "http://mc.westeroscraft.com/WesterosCraftLauncher/files/example_icon.png",
             "version": "0.0.1",
-            "address": "play.finalium.fr:25565",
-            "minecraftVersion": "1.12.2",
+            "address": "mc.westeroscraft.com:1337",
+            "minecraftVersion": "1.11.2",
             "discord": {
-                "shortId": "Finalium Network",
-                "largeImageText": "Géopolitique, EuropaCraft",
+                "shortId": "Example",
+                "largeImageText": "WesterosCraft Example Server",
                 "largeImageKey": "server-example"
             },
             "mainServer": true,

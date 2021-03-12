@@ -28,7 +28,7 @@ exports.getStatus = function(address, port = 25565){
             reject({
                 code: 'ETIMEDOUT',
                 errno: 'ETIMEDOUT',
-                address : 'play.finalium.fr',
+                address,
                 port
             })
         })

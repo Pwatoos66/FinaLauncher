@@ -6,87 +6,17 @@
  * if applicable, in the config using the ConfigManager. All login procedures should
  * be made through this module.
  * 
+ * @module authmanager
  */
 // Requirements
-const Azuriom        = require('./azuriom')
 const ConfigManager = require('./configmanager')
 const LoggerUtil    = require('./loggerutil')
 const Mojang        = require('./mojang')
-//const { Authenticator }       = require('azuriom-auth'). new Authenticator('https://finalium.fr');
 const logger        = LoggerUtil('%c[AuthManager]', 'color: #a02d2a; font-weight: bold')
 const loggerSuccess = LoggerUtil('%c[AuthManager]', 'color: #209b07; font-weight: bold')
+const Microsoft     = require('./microsoft')
 
-// Functions
-
-/**
- * Add an account. This will authenticate the given credentials with Mojang's
- * authserver. The resultant data will be stored as an auth account in the
- * configuration database.
- * 
- * @param {string} username The account username (email if migrated).
- * @param {string} password The account password.
- * @returns {Promise.<Object>} Promise which resolves the resolved authenticated account object.
- */
-exports.addAccount = async function(username, password){
-    try {
-        const session = await Azuriom.authenticate(username, password)
-        if(session.id != null){
-            const ret = ConfigManager.addAuthAccount(session.uuid, session.accessToken, username, session.username)
-            if(ConfigManager.getClientToken() == null){
-                ConfigManager.setClientToken(session.clientToken)
-            }
-
-            if(!session.email_verified) throw new Error('NotVerifiedAccount')
-
-            ConfigManager.save()
-            return ret
-        } else {
-            switch(session.message){
-                case "Invalid credentials":
-                    throw new Error('UnknownAccount')
-                case "User banned":
-                    throw new Error('BannedAccount')
-            }
-            
-        }
-        
-    } catch (err){
-        return Promise.reject(err)
-    }
-}
-
-/**
- * Remove an account. This will invalidate the access token associated
- * with the account and then remove it from the database.
- * 
- * @param {string} uuid The UUID of the account to be removed.
- * @returns {Promise.<void>} Promise which resolves to void when the action is complete.
- */
-exports.removeAccount = async function(uuid){
-    try {
-        const authAcc = ConfigManager.getAuthAccount(uuid)
-        await Azuriom.logout(authAcc.accessToken)
-        ConfigManager.removeAuthAccount(uuid)
-        ConfigManager.save()
-        return Promise.resolve()
-    } catch (err){
-        return Promise.reject(err)
-    }
-}
-
-/**
- * Validate the selected account with Mojang's authserver. If the account is not valid,
- * we will attempt to refresh the access token and update that value. If that fails, a
- * new login will be required.
- * 
- * **Function is WIP**
- * 
- * @returns {Promise.<boolean>} Promise which resolves to true if the access token is valid,
- * otherwise false.
- */
-
- /*
-exports.validateSelected = async function(){
+async function validateSelectedMojang() {
     const current = ConfigManager.getSelectedAccount()
     const isValid = await Mojang.validate(current.accessToken, ConfigManager.getClientToken())
     if(!isValid){
@@ -109,4 +39,130 @@ exports.validateSelected = async function(){
         return true
     }
 }
-*/
+
+async function validateSelectedMicrosoft() {
+    try {
+        const current = ConfigManager.getSelectedAccount()
+        const now = new Date().getTime()
+        const MCExpiresAt = Date.parse(current.expiresAt)
+        const MCExpired = now > MCExpiresAt
+
+        if(MCExpired) {
+            const MSExpiresAt = Date.parse(ConfigManager.getMicrosoftAuth().expires_at)
+            const MSExpired = now > MSExpiresAt
+
+            if (MSExpired) {
+                const newAccessToken = await Microsoft.refreshAccessToken(ConfigManager.getMicrosoftAuth)
+                ConfigManager.updateMicrosoftAuth(newAccessToken.access_token, newAccessToken.expires_at)
+                ConfigManager.save()
+            }
+            const newMCAccessToken = await Microsoft.authMinecraft(ConfigManager.getMicrosoftAuth().access_token)
+            ConfigManager.updateAuthAccount(current.uuid, newMCAccessToken.access_token, newMCAccessToken.expires_at)
+            ConfigManager.save()
+
+            return true
+        } else {
+            return true
+        }
+    } catch (error) {
+        return Promise.reject(error)
+    }
+}
+
+// Exports
+// Functions
+
+/**
+ * Add an account. This will authenticate the given credentials with Mojang's
+ * authserver. The resultant data will be stored as an auth account in the
+ * configuration database.
+ * 
+ * @param {string} username The account username (email if migrated).
+ * @param {string} password The account password.
+ * @returns {Promise.<Object>} Promise which resolves the resolved authenticated account object.
+ */
+exports.addAccount = async function(username, password){
+    try {
+        const session = await Mojang.authenticate(username, password, ConfigManager.getClientToken())
+        if(session.selectedProfile != null){
+            const ret = ConfigManager.addAuthAccount(session.selectedProfile.id, session.accessToken, username, session.selectedProfile.name)
+            if(ConfigManager.getClientToken() == null){
+                ConfigManager.setClientToken(session.clientToken)
+            }
+            ConfigManager.save()
+            return ret
+        } else {
+            throw new Error('NotPaidAccount')
+        }
+        
+    } catch (err){
+        return Promise.reject(err)
+    }
+}
+
+/**
+ * Remove an account. This will invalidate the access token associated
+ * with the account and then remove it from the database.
+ * 
+ * @param {string} uuid The UUID of the account to be removed.
+ * @returns {Promise.<void>} Promise which resolves to void when the action is complete.
+ */
+exports.removeAccount = async function(uuid){
+    try {
+        const authAcc = ConfigManager.getAuthAccount(uuid)
+        await Mojang.invalidate(authAcc.accessToken, ConfigManager.getClientToken())
+        ConfigManager.removeAuthAccount(uuid)
+        ConfigManager.save()
+        return Promise.resolve()
+    } catch (err){
+        return Promise.reject(err)
+    }
+}
+
+/**
+ * Validate the selected account with Mojang's authserver. If the account is not valid,
+ * we will attempt to refresh the access token and update that value. If that fails, a
+ * new login will be required.
+ * 
+ * **Function is WIP**
+ * 
+ * @returns {Promise.<boolean>} Promise which resolves to true if the access token is valid,
+ * otherwise false.
+ */
+exports.validateSelected = async function(){
+    const current = ConfigManager.getSelectedAccount()
+    const isValid = await Mojang.validate(current.accessToken, ConfigManager.getClientToken())
+    if(!isValid){
+        try{
+            if (ConfigManager.getSelectedAccount() === 'microsoft') {
+                const validate = await validateSelectedMicrosoft()
+                return validate
+            } else {
+                const validate = await validateSelectedMojang()
+                return validate
+            }
+        } catch (error) {
+            return Promise.reject(error)
+        }
+    } else return true
+}
+
+exports.addMSAccount = async authCode => {
+    try {
+        const accessToken = await Microsoft.getAccessToken(authCode)
+        ConfigManager.setMicrosoftAuth(accessToken)
+        const MCAccessToken = await Microsoft.authMinecraft(accessToken.access_token)
+        const minecraftBuyed = await Microsoft.checkMCStore(MCAccessToken.access_token)
+        if(!minecraftBuyed)
+            return Promise.reject({
+                message: 'You didn\'t buy Minecraft! Please use another Microsoft account or buy Minecraft.'
+            })
+        const MCProfile = await Microsoft.getMCProfile(MCAccessToken.access_token)
+        const ret = ConfigManager.addAuthAccount(MCProfile.id, MCAccessToken.access_token, MCProfile.name, MCProfile.name, MCAccessToken.expires_at, 'microsoft')
+        ConfigManager.save()
+
+        return ret
+    } catch(error) {
+        return Promise.reject(error)
+    }
+}
